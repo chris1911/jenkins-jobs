@@ -15,7 +15,7 @@ All available targets are compiled within this project.</description>
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         ws {
             dir(&apos;ffka&apos;) {
-                stage(&apos;Cleanup&apos;) {
+                /*stage(&apos;Cleanup&apos;)*/ {
                         deleteDir()
                 }
     
