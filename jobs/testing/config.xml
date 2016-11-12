@@ -22,8 +22,7 @@
                         checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;master&apos;]]])
                     }
 
-                    env.gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk&apos;])
-                    echo env.gluonBranch
+                    env.gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk gluonbranch&apos;])
                 }
                 
                 dir(&apos;ffka&apos;) {
@@ -33,6 +32,15 @@
                         sh &quot;ln -s ../site ./site&quot;
                     }
                     
+                    stage(&apos;Update sub projects&apos;) {
+                        sh &quot;make update&quot;
+                    }
+        
+                    stage(&apos;Build ar71xx-generic&apos;) {
+                        // todo: read enabled targets from gluon/targets/targets.mk
+                        sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic clean&quot;
+                        sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic&quot;
+                    }
                 }
             }
         }
