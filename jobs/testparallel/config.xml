@@ -16,9 +16,10 @@
             branches[&quot;split${i}&quot;] = {
                 stage(&quot;Stage parallel- #&quot;+i) {
                     node {
-                        echo  &apos;Starting sleep&apos;
-                        sleep 10
-                        echo  &apos;Finished sleep&apos;
+                        echo &apos;Starting sleep&apos;
+                        echo &apos;Workspace: &apos; + env.WORKSPACE
+                        sleep 2
+                        echo &apos;Finished sleep&apos;
                     }
                 }
             }
