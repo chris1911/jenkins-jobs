@@ -18,7 +18,7 @@
             ws {
                 dir(&apos;site&apos;) {
                     def foo = sh([returnStdout: true, script: &apos;echo &quot;bar&quot;&apos;])
-                    echo $foo
+                    echo foo
                 }
             }
         }
