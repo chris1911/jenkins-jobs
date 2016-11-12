@@ -21,9 +21,9 @@ All available targets are compiled within this project.</description>
     
                 stage(&apos;Checkout&apos;) {
                     checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: &apos;refs/tags/v2016.2&apos;]]])
-                    //dir(&apos;site&apos;) {
-                    //    checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
-                    //}
+                    dir(&apos;site&apos;) {
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
+                    }
                 }
     
                 /*stage(&apos;Update sub projects&apos;) {
