@@ -10,6 +10,10 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
+    stage(&quot;Workspace preparations&quot;) {
+        echo &apos;Workspace: &apos; + env.WORKSPACE
+        sh &quot;touch myworkspace&quot;
+    }
     stage(&quot;Stage Parallel&quot;) {
         def branches = [:]
         for (int i = 0; i &lt; 5; i++) {
@@ -18,6 +22,7 @@
                     node {
                         echo &apos;Starting sleep&apos;
                         echo &apos;Workspace: &apos; + env.WORKSPACE
+                        sh &quot;ls -l&quot;
                         sleep 2
                         echo &apos;Finished sleep&apos;
                     }
