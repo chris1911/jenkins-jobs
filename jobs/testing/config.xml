@@ -21,11 +21,8 @@
     }
     
     for (String target: params) {
-        def stagename = &apos;Build &apos; + target
-        stage(stagename) {
-            env.GLUON_TARGET = target
-            echo &apos;GLUON_TARGET: &apos; + env.GLUON_TARGET
-        }
+        env.GLUON_TARGET = target
+        echo &apos;GLUON_TARGET: &apos; + env.GLUON_TARGET
     }
 
     break exit
