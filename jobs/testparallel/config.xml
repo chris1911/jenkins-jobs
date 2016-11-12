@@ -15,7 +15,7 @@
         for (int i = 0; i &lt; 5; i++) {
             branches[&quot;split${i}&quot;] = {
                 stage(&quot;Stage parallel- #&quot;+i) {
-                    node(&apos;remote&apos;) {
+                    node {
                         echo  &apos;Starting sleep&apos;
                         sleep 10
                         echo  &apos;Finished sleep&apos;
