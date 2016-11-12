@@ -13,7 +13,7 @@ All available targets are compiled within this project.</description>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
     //wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-        //ws {
+        ws {
             //dir(&apos;ffka&apos;) {
                 //stage(&apos;Cleanup&apos;) {
                         deleteDir()
@@ -77,15 +77,10 @@ All available targets are compiled within this project.</description>
                 }*/
     
                 //stage(&apos;generate test data&apos;) {
-                ws {
                     stage(&apos;foo&apos;) {
                         sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
                     }
-                    stage(&apos;Wrap artifacts up&apos;) {
-                        archiveArtifacts artifacts: &apos;**&apos;, fingerprint: true, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
-                    }
-                
-    
+
                     stage(&apos;Wrap artifacts up&apos;) {
                         // should be ~180MiB per target, maybe less when all files are in a single archive.
                         archiveArtifacts artifacts: &apos;**&apos;, fingerprint: true, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
@@ -95,7 +90,7 @@ All available targets are compiled within this project.</description>
                      step([$class: &apos;WsCleanup&apos;, cleanWhenFailure: false])
                 }
             //}
-        //}
+        }
     //}
 }</script>
     <sandbox>true</sandbox>
