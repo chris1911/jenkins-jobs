@@ -45,9 +45,9 @@
                     String[] targets = gluontargets.trim().split(&apos; &apos;)
                     for (String target: targets) {
                         echo &apos;Building &apos; + target
-                        env.GLUON_TARGET = target
-                        sh &quot;make -j \$(nproc) clean&quot;
-                        sh &quot;make -j \$(nproc)&quot;
+                        cmd = &quot;make -j \$(nproc) GLUON_TARGET=&quot; + target
+                        sh cmd + &quot; clean&quot;
+                        sh cmd
                     }
                 }
             }
