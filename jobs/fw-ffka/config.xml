@@ -12,7 +12,7 @@ All available targets are compiled within this project.</description>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
-    //wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
+    wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         ws {
             dir(&apos;ffka&apos;) {
                 stage(&apos;Cleanup&apos;) {
@@ -90,7 +90,7 @@ All available targets are compiled within this project.</description>
                 }
             }
         }
-    //}
+    }
 }</script>
     <sandbox>true</sandbox>
   </definition>
