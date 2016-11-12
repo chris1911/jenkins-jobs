@@ -76,8 +76,7 @@ All available targets are compiled within this project.</description>
                     sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu&quot;
                 }*/
     
-                //stage(&apos;generate test data&apos;) {
-                stage(&apos;foo&apos;) {
+                stage(&apos;generate test data&apos;) {
                     sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
                 }
 
