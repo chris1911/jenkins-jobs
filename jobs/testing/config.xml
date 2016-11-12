@@ -19,7 +19,6 @@
     for (String param: params) {
         println &quot;Param: ${param}&quot;
     }
-    exit 
     
     for (String target: params) {
         stagename = &apos;Build &apos; + target
