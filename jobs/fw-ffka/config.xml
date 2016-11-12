@@ -14,7 +14,7 @@ All available targets are compiled within this project.</description>
     <script>node {
     //wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         ws {
-            //dir(&apos;ffka&apos;) {
+            dir(&apos;ffka&apos;) {
                 stage(&apos;Cleanup&apos;) {
                         deleteDir()
                 }
@@ -88,7 +88,7 @@ All available targets are compiled within this project.</description>
                 stage(&apos;Cleanup&apos;) {
                      step([$class: &apos;WsCleanup&apos;, cleanWhenFailure: false])
                 }
-            //}
+            }
         }
     //}
 }</script>
