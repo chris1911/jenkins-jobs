@@ -26,11 +26,6 @@
             env.GLUON_TARGET = target
             echo &apos;GLUON_TAREGT: &apos; + env.GLUON_TARGET
         }
-        
-        ++counter2
-        if (counter2 == 3) {
-            break exit
-        }
     }
 
     exit
