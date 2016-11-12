@@ -12,7 +12,7 @@ All available targets are compiled within this project.</description>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
-    wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
+    //wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         ws {
             dir(&apos;ffka&apos;) {
                 stage(&apos;Cleanup&apos;) {
@@ -75,6 +75,10 @@ All available targets are compiled within this project.</description>
                     sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu clean&quot;
                     sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu&quot;
                 }*/
+    
+                stage(&apos;generate test data&apos;) {
+                    sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
+                }
 
                 stage(&apos;Wrap artifacts up&apos;) {
                     // should be ~180MiB per target, maybe less when all files are in a single archive.
@@ -86,7 +90,7 @@ All available targets are compiled within this project.</description>
                 }
             }
         }
-    }
+    //}
 }</script>
     <sandbox>true</sandbox>
   </definition>
