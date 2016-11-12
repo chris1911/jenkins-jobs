@@ -45,7 +45,8 @@
                     String[] targets = gluontargets.trim().split(&apos; &apos;)
                     for (String target: targets) {
                         echo &apos;Building &apos; + target
-                        cmd = &quot;make -j \$(nproc) GLUON_TARGET=&quot; + target
+                        def cmd = &quot;make -j \$(nproc) GLUON_TARGET=&quot; + target
+                        echo &quot;&apos;&quot; + cmd + &quot;&apos;&quot;
                         sh cmd + &quot; clean&quot;
                         sh cmd
                     }
