@@ -43,13 +43,14 @@
                     
                     def gluontargets = sh([returnStdout: true, script: &apos;make -f site/jenkins.mk targets&apos;])
                     String[] targets = gluontargets.trim().split(&apos; &apos;)
+                    
                     for(int i = 0; i &lt; targets.size(); i++) {   // for-loop must stay, otherwise: java.io.NotSerializableException: java.util.AbstractList$Itr
                         def target = targets[i]
                         echo &apos;Building &apos; + target
-                        def cmd = &quot;make -j \$(nproc) GLUON_TARGET=&quot; + target
-                        echo &quot;&apos;&quot; + cmd + &quot;&apos;&quot;
-                        //sh cmd + &quot; clean&quot;
-                        sh cmd
+                        
+                        env.GLUON_TARGET = target
+                        sh &quot;make -j \$(nproc) clean&quot;
+                        sh &quot;make -j \$(nproc)&quot;
                     }
                 }
             }
