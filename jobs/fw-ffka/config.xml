@@ -79,6 +79,7 @@ All available targets are compiled within this project.</description>
                 //stage(&apos;generate test data&apos;) {
                 ws {
                     sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
+                    archiveArtifacts artifacts: &apos;**&apos;, fingerprint: true, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
                 }
     
                 stage(&apos;Wrap artifacts up&apos;) {
