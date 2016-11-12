@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.9">
+  <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
@@ -9,15 +10,9 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
-    for (int i=0; i&lt; 2; ++i) {
-        stage(&quot;Stage #&quot;+i) {
-            print &apos;Hello, world $i!&apos;
-        }
-    }
-    
     stage(&quot;Stage Parallel&quot;) {
         def branches = [:]
-        for (int i = 0; i &lt; numHelloMessages.toInteger(); i++) {
+        for (int i = 0; i &lt; 5; i++) {
             branches[&quot;split${i}&quot;] = {
                 stage &quot;Stage parallel- #&quot;+i
                 node(&apos;remote&apos;) {
