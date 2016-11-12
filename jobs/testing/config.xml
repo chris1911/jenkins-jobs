@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.9">
+  <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
@@ -16,11 +17,7 @@
             }
             ws {
                 dir(&apos;site&apos;) {
-                    stage(&apos;Checkout site.conf&apos;) {
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
-                    }
-                    
-                    def foo = sh([returnStdout: true, script: &apos;echo &quot;foo&quot;&apos;])
+                    def foo = sh([returnStdout: true, script: &apos;echo &quot;bar&quot;&apos;])
                     echo $foo
                 }
             }
