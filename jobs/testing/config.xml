@@ -18,7 +18,8 @@
             ws {
                 dir(&apos;site&apos;) {
                     stage(&apos;Checkout site.conf&apos;) {
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
+                        //checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;master&apos;]]])
                     }
 
                     def gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk&apos;])
