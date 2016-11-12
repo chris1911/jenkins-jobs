@@ -28,6 +28,13 @@
     <hudson.model.AllView>
       <owner class="hudson" reference="../../.."/>
       <name>All</name>
+      <description>fw-ffka: Build process works with pipeline, stages, timed tasks, workspace cleanup (always) and artifact log rotate (keep the last 3 runs)&#xd;
+Todos:&#xd;
+- build all targets (currently: ar71xx-generic + -nand)&#xd;
+- trigger build on github commit (link to which branch?)&#xd;
+- email notification?&#xd;
+- make artifacts (archive of firmware images) accessible for signing and distribution&#xd;
+- check if all packages are built</description>
       <filterExecutors>false</filterExecutors>
       <filterQueue>false</filterQueue>
       <properties class="hudson.model.View$PropertyList"/>
