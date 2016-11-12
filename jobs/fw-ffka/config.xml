@@ -79,7 +79,7 @@ All available targets are compiled within this project.</description>
                 //stage(&apos;generate test data&apos;) {
                 ws {
                     sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
-                    archiveArtifacts artifacts: &apos;/*.*&apos;, fingerprint: true
+                    archiveArtifacts allowEmptyArchive: true, artifacts: &apos;*&apos;, caseSensitive: false, defaultExcludes: false, fingerprint: true, onlyIfSuccessful: true
                 //}
                 }
     
