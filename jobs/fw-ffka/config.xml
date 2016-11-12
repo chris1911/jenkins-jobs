@@ -12,87 +12,79 @@ All available targets are compiled within this project.</description>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
-    dir(&apos;ffka&apos;) {
-        stage &apos;Cleanup&apos;
-        deleteDir()
-        
-        stage &apos;Checkout&apos;
-        // this does not work: git url: &quot;git://github.com/freifunk-gluon/gluon.git&quot;, branch: &quot;tags/v2016.2&quot;
-        // hence we have to use the long variant:
-        checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;refs/tags/v2016.2&apos;]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]]])
-        dir(&apos;site&apos;) {
-            git url: &quot;git://github.com/ffka/site-ffka&quot;, branch: &quot;master&quot;
-        }
-        
-        stage &apos;Update sub projects&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make update&quot;
-        }
-        
-        stage &apos;Build ar71xx-generic&apos;
-        // todo: read enabled targets from gluon/targets/targets.mk
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic&quot;
-        }
-        
-        stage &apos;Build ar71xx-nand&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-nand clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-nand&quot;
-        }
-        
-        stage &apos;Build brcm2708-bcm2708&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2708 clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2708&quot;
-        }
-        
-        stage &apos;Build brcm2708-bcm2709&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2709 clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2709&quot;
-        }
-        
-        stage &apos;Build mpc85xx-generic&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=mpc85xx-generic clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=mpc85xx-generic&quot;
-        }
-        
-        stage &apos;Build x86-64&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-64 clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-64&quot;
-        }
-        
-        stage &apos;Build x86-generic&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-generic clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-generic&quot;
-        }
-        
-        stage &apos;Build x86-kvm_guest&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-kvm_guest clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-kvm_guest&quot;
-        }
-        
-        stage &apos;Build x86-xen_domu&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu clean&quot;
-            sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu&quot;
-        }
-        
-        stage &apos;Wrap artifacts up&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            // should be ~180MiB per target, maybe less when all files are in a single archive.
-            // archiveArtifacts artifacts: &apos;output&apos;, fingerprint: true, onlyIfSuccessful: true
-        }
-        
-        stage &apos;Cleanup&apos;
-        wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
-            step([$class: &apos;WsCleanup&apos;, cleanWhenFailure: false])
+    wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
+        dir(&apos;ffka&apos;) {
+            stage(&apos;Cleanup&apos;) {
+                    deleteDir()
+            }
+
+            stage(&apos;Checkout&apos;) {
+                // this does not work: git url: &quot;git://github.com/freifunk-gluon/gluon.git&quot;, branch: &quot;tags/v2016.2&quot;
+                // hence we have to use the long variant:
+                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;refs/tags/v2016.2&apos;]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]]])
+                dir(&apos;site&apos;) {
+                    git url: &quot;git://github.com/ffka/site-ffka&quot;, branch: &quot;master&quot;
+                }
+            }
+
+            stage(&apos;Update sub projects&apos;) {
+                sh &quot;make update&quot;
+            }
+
+            stage(&apos;Build ar71xx-generic&apos;) {
+                // todo: read enabled targets from gluon/targets/targets.mk
+                sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic&quot;
+            }
+
+            stage(&apos;Build ar71xx-nand&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-nand clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-nand&quot;
+            }
+
+            stage(&apos;Build brcm2708-bcm2708&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2708 clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2708&quot;
+            }
+
+            stage(&apos;Build brcm2708-bcm2709&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2709 clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=brcm2708-bcm2709&quot;
+            }
+
+            stage(&apos;Build mpc85xx-generic&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=mpc85xx-generic clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=mpc85xx-generic&quot;
+            }
+
+            stage(&apos;Build x86-64&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-64 clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-64&quot;
+            }
+
+            stage(&apos;Build x86-generic&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-generic clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-generic&quot;
+            }
+
+            stage(&apos;Build x86-kvm_guest&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-kvm_guest clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-kvm_guest&quot;
+            }
+
+            stage(&apos;Build x86-xen_domu&apos;) {
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu clean&quot;
+                sh &quot;make -j \$(nproc) GLUON_TARGET=x86-xen_domu&quot;
+            }
+
+            stage(&apos;Wrap artifacts up&apos;) {
+                // should be ~180MiB per target, maybe less when all files are in a single archive.
+                // archiveArtifacts artifacts: &apos;output&apos;, fingerprint: true, onlyIfSuccessful: true
+            }
+
+            stage(&apos;Cleanup&apos;) {
+                step([$class: &apos;WsCleanup&apos;, cleanWhenFailure: false])
+            }
         }
     }
 }</script>
