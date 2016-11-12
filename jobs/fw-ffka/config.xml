@@ -12,6 +12,8 @@ All available targets are compiled within this project.</description>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
+    // env.ffsitebranch = &apos;refs/tags/v0.2.90-stable.1&apos;
+    env.ffsitebranch = &quot;master&quot;
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         timeout(time: 12, unit: &apos;HOURS&apos;) {
             stage(&apos;Cleanup&apos;) {
@@ -20,14 +22,16 @@ All available targets are compiled within this project.</description>
             ws {
                 dir(&apos;site&apos;) {
                     stage(&apos;Checkout site.conf&apos;) {
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: env.ffsitebranch]]])
                     }
+
+                    env.gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk gluonbranch&apos;])
                 }
-                        
+                
                 dir(&apos;ffka&apos;) {
-        
                     stage(&apos;Checkout gluon&apos;) {
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: &apos;refs/tags/v2016.2&apos;]]])
+                        def branchName = &apos;refs/tags/&apos; + env.gluonBranch
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: branchName]]])
                         sh &quot;ln -s ../site ./site&quot;
                     }
         
