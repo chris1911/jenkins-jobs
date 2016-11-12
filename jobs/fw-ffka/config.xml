@@ -19,11 +19,9 @@ All available targets are compiled within this project.</description>
             }
 
             stage(&apos;Checkout&apos;) {
-                // this does not work: git url: &quot;git://github.com/freifunk-gluon/gluon.git&quot;, branch: &quot;tags/v2016.2&quot;
-                // hence we have to use the long variant:
-                checkout([$class: &apos;GitSCM&apos;, branches: [[name: &apos;refs/tags/v2016.2&apos;]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]]])
+                checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: &apos;refs/tags/v2016.2&apos;]]])
                 dir(&apos;site&apos;) {
-                    git url: &quot;git://github.com/ffka/site-ffka&quot;, branch: &quot;master&quot;
+                    checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
                 }
             }
 
