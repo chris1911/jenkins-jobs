@@ -41,7 +41,7 @@
                         sh &quot;make update&quot;
                     }
                     
-                    def gluontargets = sh &quot;make -f site/jenkins.mk targets&quot;
+                    def gluontargets = sh([returnStdout: true, script: &apos;make -f site/jenkins.mk targets&apos;])
                     String[] targets = gluontargets.trim().split(&apos; &apos;)
                     for (String target: targets) {
                         echo &apos;Building &apos; + target
