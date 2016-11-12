@@ -25,6 +25,15 @@
                     def gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk&apos;])
                     echo gluonBranch
                 }
+                
+                dir(&apos;ffka&apos;) {
+                    stage(&apos;Checkout gluon&apos;) {
+                        branchName = &apos;refs/tags/&apos; + gluonBranch
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: branchName]]])
+                        sh &quot;ln -s ../site ./site&quot;
+                    }
+                    
+                }
             }
         }
     }
