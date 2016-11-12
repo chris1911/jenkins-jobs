@@ -12,10 +12,10 @@
     <script>node {
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         timeout(time: 6, unit: &apos;HOURS&apos;) {
-            stage(&apos;Cleanup&apos;) {
-                deleteDir()
-            }
             ws {
+                stage(&apos;Cleanup&apos;) {
+                    deleteDir()
+                }
                 dir(&apos;site&apos;) {
                     stage(&apos;Checkout site.conf&apos;) {
                         //checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
