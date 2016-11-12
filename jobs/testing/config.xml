@@ -45,10 +45,8 @@
                     String[] targets = gluontargets.trim().split(&apos; &apos;)
                     
                     for(int i = 0; i &lt; targets.size(); i++) {   // for-loop must stay, otherwise: java.io.NotSerializableException: java.util.AbstractList$Itr
-                        def target = targets[i]
-                        echo &apos;Building &apos; + target
-                        
-                        env.GLUON_TARGET = target
+                        env.GLUON_TARGET = targets[i]
+                        echo &apos;Building &apos; + env.GLUON_TARGET
                         sh &quot;make -j \$(nproc) clean&quot;
                         sh &quot;make -j \$(nproc)&quot;
                     }
