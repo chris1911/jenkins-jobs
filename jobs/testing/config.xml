@@ -10,6 +10,25 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
+    
+    def counter = 0
+    def targets = &apos; ar71xx-generic ar71xx-nand brcm2708-bcm2708 brcm2708-bcm2709 mpc85xx-generic x86-generic x86-kvm_guest x86-64 x86-xen_domu&apos;
+    gluontargets.each { target -&gt; 
+        stagename = &apos;Build &apos; + target
+        stage(stagename) {
+            env.GLUON_TARGET = target
+            sh &quot;make -j \$(nproc) clean&quot;
+            sh &quot;make -j \$(nproc)&quot;
+        }
+        
+        ++counter
+        if (counter == 3) {
+            break exit
+        }
+    }
+
+    exit
+    
     // env.ffsitebranch = &apos;refs/tags/v0.2.90-stable.1&apos;
     // env.ffsitebranch = &quot;master&quot;
     env.ffsitebranch = &quot;gluon-2016.2.1&quot;
