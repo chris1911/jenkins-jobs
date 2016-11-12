@@ -25,8 +25,7 @@
         stagename = &apos;Build &apos; + target
         stage(stagename) {
             env.GLUON_TARGET = target
-            sh &quot;make -j \$(nproc) clean&quot;
-            sh &quot;make -j \$(nproc)&quot;
+            echo &apos;GLUON_TAREGT: &apos; + env.GLUON_TARGET
         }
         
         ++counter2
