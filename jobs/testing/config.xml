@@ -43,7 +43,9 @@
                     
                     def gluontargets = sh([returnStdout: true, script: &apos;make -f site/jenkins.mk targets&apos;])
                     String[] targets = gluontargets.trim().split(&apos; &apos;)
-                    for (String target: targets) {
+                    // for (String target: targets) {
+                    for(int i = 0; i &lt; targets.size(); i++) {
+                        def target = targets[i]
                         echo &apos;Building &apos; + target
                         def cmd = &quot;make -j \$(nproc) GLUON_TARGET=&quot; + target
                         echo &quot;&apos;&quot; + cmd + &quot;&apos;&quot;
