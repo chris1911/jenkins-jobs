@@ -24,11 +24,11 @@
         stagename = &apos;Build &apos; + target
         stage(stagename) {
             env.GLUON_TARGET = target
-            echo &apos;GLUON_TAREGT: &apos; + env.GLUON_TARGET
+            echo &apos;GLUON_TARGET: &apos; + env.GLUON_TARGET
         }
     }
 
-    exit
+    break exit
     
     // env.ffsitebranch = &apos;refs/tags/v0.2.90-stable.1&apos;
     // env.ffsitebranch = &quot;master&quot;
