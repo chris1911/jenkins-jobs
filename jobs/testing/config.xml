@@ -1,6 +1,33 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.9">
+  <description></description>
   <keepDependencies>false</keepDependencies>
-  <properties/>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
+    <script>node {
+    wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
+        timeout(time: 12, unit: &apos;HOURS&apos;) {
+            stage(&apos;Cleanup&apos;) {
+                deleteDir()
+            }
+            ws {
+                dir(&apos;site&apos;) {
+                    stage(&apos;Checkout site.conf&apos;) {
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
+                    }
+                    
+                    def foo = sh([returnStdout: true, script: &apos;echo &quot;foo&quot;&apos;])
+                    echo $foo
+                }
+            }
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
   <triggers/>
 </flow-definition>
