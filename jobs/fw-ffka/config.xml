@@ -82,7 +82,7 @@ All available targets are compiled within this project.</description>
 
                 stage(&apos;Wrap artifacts up&apos;) {
                     // should be ~180MiB per target, maybe less when all files are in a single archive.
-                    archiveArtifacts artifacts: &apos;/output/**&apos;, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
+                    archiveArtifacts artifacts: &apos;output/**&apos;, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
                 }
                 
                 stage(&apos;Cleanup&apos;) {
