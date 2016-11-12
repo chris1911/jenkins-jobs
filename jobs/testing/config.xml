@@ -21,8 +21,10 @@
     }
     
     for (String target: params) {
-        env.GLUON_TARGET = target
-        echo &apos;GLUON_TARGET: &apos; + env.GLUON_TARGET
+        stage(target) {
+            env.GLUON_TARGET = target
+            echo &apos;GLUON_TARGET: &apos; + env.GLUON_TARGET
+        }
     }
 
     break exit
