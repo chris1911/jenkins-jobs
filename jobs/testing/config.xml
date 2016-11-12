@@ -22,13 +22,13 @@
                         checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;master&apos;]]])
                     }
 
-                    def gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk&apos;])
-                    echo gluonBranch
+                    ENV.gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk&apos;])
+                    echo ENV.gluonBranch
                 }
                 
                 dir(&apos;ffka&apos;) {
                     stage(&apos;Checkout gluon&apos;) {
-                        branchName = &apos;refs/tags/&apos; + gluonBranch
+                        def branchName = &apos;refs/tags/&apos; + ENV.gluonBranch
                         checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: branchName]]])
                         sh &quot;ln -s ../site ./site&quot;
                     }
