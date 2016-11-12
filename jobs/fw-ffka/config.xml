@@ -14,20 +14,24 @@ All available targets are compiled within this project.</description>
     <script>node {
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         timeout(time: 12, unit: &apos;HOURS&apos;) {
+            stage(&apos;Cleanup&apos;) {
+                deleteDir()
+            }
             ws {
+                dir(&apos;site&apos;) {
+                    stage(&apos;Checkout site.conf&apos;) {
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
+                    }
+                }
+                        
                 dir(&apos;ffka&apos;) {
-                    stage(&apos;Cleanup&apos;) {
-                            deleteDir()
-                    }
         
-                    stage(&apos;Checkout&apos;) {
+                    stage(&apos;Checkout gluon&apos;) {
                         checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: &apos;refs/tags/v2016.2&apos;]]])
-                        dir(&apos;site&apos;) {
-                            checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/ffka/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
-                        }
+                        sh &quot;ln -s ../site ./site&quot;
                     }
         
-                    stage(&apos;Update sub projects&apos;) {
+                    /*stage(&apos;Update sub projects&apos;) {
                         sh &quot;make update&quot;
                     }
         
@@ -37,7 +41,7 @@ All available targets are compiled within this project.</description>
                         sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-generic&quot;
                     }*/
         
-                    stage(&apos;Build ar71xx-nand&apos;) {
+                    /*stage(&apos;Build ar71xx-nand&apos;) {
                         sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-nand clean&quot;
                         sh &quot;make -j \$(nproc) GLUON_TARGET=ar71xx-nand&quot;
                     }
