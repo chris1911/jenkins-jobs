@@ -10,6 +10,10 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
+    // env.ffsitebranch = &apos;refs/tags/v0.2.90-stable.1&apos;
+    // env.ffsitebranch = &quot;master&quot;
+    env.ffsitebranch = &quot;gluon-2016.2.1&quot;
+    
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         timeout(time: 6, unit: &apos;HOURS&apos;) {
             ws {
@@ -18,8 +22,7 @@
                 }
                 dir(&apos;site&apos;) {
                     stage(&apos;Checkout site.conf&apos;) {
-                        //checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;refs/tags/v0.2.90-stable.1&apos;]]])
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: &apos;master&apos;]]])
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: env.ffsitebranch]]])
                     }
 
                     env.gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk gluonbranch&apos;])
