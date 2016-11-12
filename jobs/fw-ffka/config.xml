@@ -77,15 +77,15 @@ All available targets are compiled within this project.</description>
                 }*/
     
                 //stage(&apos;generate test data&apos;) {
-                    stage(&apos;foo&apos;) {
-                        sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
-                    }
-
-                    stage(&apos;Wrap artifacts up&apos;) {
-                        // should be ~180MiB per target, maybe less when all files are in a single archive.
-                        archiveArtifacts artifacts: &apos;**&apos;, fingerprint: true, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
-                    }
+                stage(&apos;foo&apos;) {
+                    sh &quot;mkdir -p output; echo &apos;test&apos; &gt; output/thisIsMyArtefact&quot;
                 }
+
+                stage(&apos;Wrap artifacts up&apos;) {
+                    // should be ~180MiB per target, maybe less when all files are in a single archive.
+                    archiveArtifacts artifacts: &apos;**&apos;, fingerprint: true, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
+                }
+                
                 stage(&apos;Cleanup&apos;) {
                      step([$class: &apos;WsCleanup&apos;, cleanWhenFailure: false])
                 }
