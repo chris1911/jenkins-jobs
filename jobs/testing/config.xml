@@ -41,14 +41,20 @@
                         sh &quot;make update&quot;
                     }
                     
-                    def gluontargets = sh([returnStdout: true, script: &apos;make -f site/jenkins.mk targets&apos;])
-                    String[] targets = gluontargets.trim().split(&apos; &apos;)
-                    
-                    for(int i = 0; i &lt; targets.size(); i++) {   // for-loop must stay, otherwise: java.io.NotSerializableException: java.util.AbstractList$Itr
-                        env.GLUON_TARGET = targets[i]
-                        echo &apos;Building &apos; + env.GLUON_TARGET
-                        sh &quot;make -j \$(nproc) clean&quot;
-                        sh &quot;make -j \$(nproc)&quot;
+                    stage(&apos;Prepare and build targets&apos;) {
+                        def gluontargets = sh([returnStdout: true, script: &apos;make -f site/jenkins.mk targets&apos;])
+                        String[] targets = gluontargets.trim().split(&apos; &apos;)
+                        
+                        for(int i = 0; i &lt; targets.size(); i++) {   // for-loop must stay, otherwise: java.io.NotSerializableException: java.util.AbstractList$Itr
+                            
+                            def stagename = &apos;Building &apos; + targets[i]
+                            stage(stagename) {
+                                env.GLUON_TARGET = targets[i]
+                                sh &quot;make -j \$(nproc) clean&quot;
+                                sh &quot;make -j \$(nproc)&quot;
+                                sh &quot;make -j \$(nproc) clean&quot;    // reduce disk space consumption; output folder remains
+                            }
+                        }
                     }
                 }
             }
