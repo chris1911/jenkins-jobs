@@ -19,7 +19,9 @@
         for (int i = 0; i &lt; 5; i++) {
             def stagename = &apos;foo&apos; + i
             stage(stagename) {
-                echo &apos;bar&apos;
+                stage(&apos;bar&apos;) {
+                    echo &apos;bar&apos;
+                }
             }
             /*branches[&quot;split${i}&quot;] = {
                 stage(&quot;Stage parallel- #&quot;+i) {
