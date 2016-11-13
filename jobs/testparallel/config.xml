@@ -17,7 +17,11 @@
     stage(&quot;Stage Parallel&quot;) {
         def branches = [:]
         for (int i = 0; i &lt; 5; i++) {
-            branches[&quot;split${i}&quot;] = {
+            def stagename = &apos;foo&apos; + i
+            stage(foo) {
+                echo &apos;bar&apos;
+            }
+            /*branches[&quot;split${i}&quot;] = {
                 stage(&quot;Stage parallel- #&quot;+i) {
                     node {
                         echo &apos;Starting sleep&apos;
@@ -27,9 +31,9 @@
                         echo &apos;Finished sleep&apos;
                     }
                 }
-            }
+            }*/
         }
-        parallel branches
+        //parallel branches
     }
 }</script>
     <sandbox>true</sandbox>
