@@ -10,12 +10,9 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
-    env.ffsiterepo = &apos;https://github.com/chris1911/site-ffka&apos;
-    // env.ffsitebranch = &apos;refs/tags/v0.2.90-stable.1&apos;
-    // env.ffsitebranch = &quot;master&quot;
-    env.ffsitebranch = &quot;gluon-2016.2.1&quot;
-    
-    env.gluonrepo = &apos;https://github.com/freifunk-gluon/gluon&apos;
+    env.ffsiterepo = &apos;https://github.com/chris1911/site-ffka&apos;   // switch to official repo asap
+    env.ffsitebranch = &apos;gluon-2016.2.1&apos;                         // &apos;master&apos; or &apos;refs/tags/v0.2.90-stable.1&apos;
+    env.gluonrepo = &apos;https://github.com/freifunk-gluon/gluon&apos;   // the correct branch/tag will be determined automatically
     
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         timeout(time: 6, unit: &apos;HOURS&apos;) {
@@ -25,6 +22,7 @@
                 }
                 dir(&apos;site&apos;) {
                     stage(&apos;Checkout site.conf&apos;) {
+                        // this is the only syntax able to check out tags
                         checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: env.ffsiterepo]], branches: [[name: env.ffsitebranch]]])
                     }
 
@@ -40,7 +38,7 @@
                         sh &quot;ln -s ../site ./site&quot;
                     }
                     
-                    stage(&apos;Update sub projects&apos;) {
+                    stage(&apos;Update gluon sub projects&apos;) {
                         sh &quot;make update&quot;
                     }
                     
@@ -50,12 +48,12 @@
                         
                         for(int i = 0; i &lt; targets.size(); i++) {   // for-loop must stay, otherwise: java.io.NotSerializableException: java.util.AbstractList$Itr
                             
-                            def stagename = &apos;Building &apos; + targets[i]
+                            def stagename = &apos;Build &apos; + targets[i]
                             stage(stagename) {
                                 env.GLUON_TARGET = targets[i]
-                                sh &quot;make -j \$(nproc) clean&quot;    // rebuilds all packages for a single target (and cleans up temporary files)
+                                sh &quot;make -j \$(nproc) clean&quot;    // rebuilds all (tool-)packages for a single target (and cleans up temporary files)
                                 sh &quot;make -j \$(nproc)&quot;
-                                sh &quot;make -j \$(nproc) clean&quot;    // reduce disk space consumption; build artifacts (=output folder) remains
+                                sh &quot;make -j \$(nproc) clean&quot;    // clean again: reduce disk space consumption; build artifacts (=output folder) remain
                             }
                         }
                     }
