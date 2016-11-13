@@ -51,6 +51,8 @@
                             def stagename = &apos;Build &apos; + targets[i]
                             stage(stagename) {
                                 env.GLUON_TARGET = targets[i]
+                                sh &quot;make V=s clean&quot;                 // bug hunting
+                                break exit
                                 sh &quot;make V=s -j \$(nproc) clean&quot;    // rebuilds all (tool-)packages for a single target (and cleans up temporary files)
                                 sh &quot;make V=s -j \$(nproc)&quot;
                                 sh &quot;make -j \$(nproc) clean&quot;    // clean again: reduce disk space consumption; build artifacts (=output folder) remain
