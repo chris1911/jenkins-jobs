@@ -10,9 +10,12 @@
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
     <script>node {
+    env.ffsiterepo = &apos;https://github.com/chris1911/site-ffka&apos;
     // env.ffsitebranch = &apos;refs/tags/v0.2.90-stable.1&apos;
     // env.ffsitebranch = &quot;master&quot;
     env.ffsitebranch = &quot;gluon-2016.2.1&quot;
+    
+    env.gluonrepo = &apos;https://github.com/freifunk-gluon/gluon&apos;
     
     wrap([$class: &apos;TimestamperBuildWrapper&apos;]) {
         timeout(time: 6, unit: &apos;HOURS&apos;) {
@@ -22,7 +25,7 @@
                 }
                 dir(&apos;site&apos;) {
                     stage(&apos;Checkout site.conf&apos;) {
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/chris1911/site-ffka&apos;]], branches: [[name: env.ffsitebranch]]])
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: env.ffsiterepo]], branches: [[name: env.ffsitebranch]]])
                     }
 
                     env.gluonBranch = sh([returnStdout: true, script: &apos;make -f jenkins.mk gluonbranch&apos;])
@@ -32,8 +35,8 @@
                 dir(&apos;ffka&apos;) {
                     stage(&apos;Checkout gluon&apos;) {
                         def branchName = &apos;refs/tags/&apos; + env.gluonBranch
-                        echo &apos;gluon-srcs: git branch name: &apos; + branchName
-                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: &apos;https://github.com/freifunk-gluon/gluon&apos;]], branches: [[name: branchName]]])
+                        echo &apos;gluon: using git branch name=&apos; + branchName
+                        checkout([$class: &apos;GitSCM&apos;, userRemoteConfigs: [[url: env.gluonrepo]], branches: [[name: branchName]]])
                         sh &quot;ln -s ../site ./site&quot;
                     }
                     
@@ -50,11 +53,20 @@
                             def stagename = &apos;Building &apos; + targets[i]
                             stage(stagename) {
                                 env.GLUON_TARGET = targets[i]
-                                sh &quot;make -j \$(nproc) clean&quot;
+                                sh &quot;make -j \$(nproc) clean&quot;    // rebuilds all packages for a single target (and cleans up temporary files)
                                 sh &quot;make -j \$(nproc)&quot;
-                                sh &quot;make -j \$(nproc) clean&quot;    // reduce disk space consumption; output folder remains
+                                sh &quot;make -j \$(nproc) clean&quot;    // reduce disk space consumption; build artifacts (=output folder) remains
                             }
                         }
+                    }
+                    
+                    stage(&apos;Wrap artifacts up&apos;) {
+                        // should be ~180MiB per target
+                        archiveArtifacts artifacts: &apos;output/**&apos;, caseSensitive: false, defaultExcludes: false, onlyIfSuccessful: true
+                    }
+                    
+                    stage(&apos;Cleanup&apos;) {
+                         step([$class: &apos;WsCleanup&apos;, cleanWhenFailure: false])
                     }
                 }
             }
